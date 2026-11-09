@@ -1142,6 +1142,18 @@ async function touch6() {
     await sleep(2000);
 }
 
+// رابط المشروع في زر GitHub (غيّره لرابط الريبو الموحد بعد إنشائه)
+const REPO_URL = "https://github.com/mohammed-turk/SahilDarbak";
+
+// فريق العمل (ضع رابط LinkedIn لرزان في linkedin؛ إذا تُرك فاضي يُخفى الزر)
+const TEAM = [
+    { name: "Razan Almadan", linkedin: "https://www.linkedin.com/in/razanalmadan/" },
+    { name: "Lama Alharbi", linkedin: "https://www.linkedin.com/in/lama-alharbi-372bb920a/" },
+    { name: "Mohammed Aljubaili", linkedin: "https://www.linkedin.com/in/mohammed-aljubaili/" }
+];
+
+const LI_ICON = `<svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"><path fill="currentColor" d="M20.45 20.45h-3.56v-5.57c0-1.33-.02-3.04-1.85-3.04-1.85 0-2.14 1.45-2.14 2.94v5.67H9.35V9h3.41v1.56h.05c.48-.9 1.64-1.85 3.37-1.85 3.6 0 4.27 2.37 4.27 5.45v6.29zM5.34 7.43a2.06 2.06 0 1 1 0-4.12 2.06 2.06 0 0 1 0 4.12zM7.12 20.45H3.56V9h3.56v11.45zM22.22 0H1.77C.79 0 0 .77 0 1.73v20.54C0 23.23.79 24 1.77 24h20.45c.98 0 1.78-.77 1.78-1.73V1.73C24 .77 23.2 0 22.22 0z"/></svg>`;
+
 const TOUCHES = [
     { name: "طلب الرحلة", desc: "ويزارد من 6 خطوات يعرّف سهل دربك على ذوقك وميزانيتك.", run: touch1 },
     { name: "الذكاء يقترح وجهتك", desc: "يحلل الطقس والعطلات والازدحام ويرشّح لك الأنسب، وأنت تختار.", run: touch2 },
@@ -1159,7 +1171,8 @@ const TOUCHES = [
 const ctl = {
     bar: $("#controlBar"), title: $("#ctlTitle"), desc: $("#ctlDesc"),
     speed: $("#speedBtn"), speedLabel: $("#speedLabel"),
-    next: $("#nextBtn"), nextLabel: $("#nextLabel"), dots: $("#demoDots")
+    next: $("#nextBtn"), nextLabel: $("#nextLabel"), dots: $("#demoDots"),
+    hint: $("#doneHint"), dim: $("#dimLayer")
 };
 ctl.dots.innerHTML = TOUCHES.map(() => "<i></i>").join("");
 
@@ -1169,6 +1182,13 @@ function updateUI() {
         d.className = S.done[k] ? "done" : (k === i && S.busy ? "on" : "");
     });
     ctl.bar.hidden = i >= TOUCHES.length;
+
+    // المؤشر الوهمي يظهر فقط أثناء اللمسة، والتعتيم والتنبيه عند انتهائها
+    const ready = !S.busy && i >= 0 && i < TOUCHES.length && !!S.done[i];
+    cursor.classList.toggle("visible", S.busy);
+    ctl.dim.classList.toggle("on", ready);
+    ctl.hint.hidden = !ready;
+    ctl.next.classList.toggle("pulse", ready || i < 0);
     ctl.speed.hidden = !S.busy;
     ctl.speed.classList.toggle("active", S.speed > 1);
     ctl.speedLabel.textContent = S.speed > 1 ? "سرعة عادية" : "سرّع اللمسة";
@@ -1192,6 +1212,11 @@ async function runTouch(i) {
     S.touch = i;
     S.busy = true;
     S.speed = 1;
+    // نثبّت المؤشر في الوسط وهو مخفي قبل ما يظهر
+    cursor.style.transition = "none";
+    cursor.style.transform = `translate(${window.innerWidth * 0.5}px, ${vh() * 0.7}px)`;
+    void cursor.offsetWidth;
+    cursor.style.transition = "";
     updateUI();
     try {
         await TOUCHES[i].run();
@@ -1247,10 +1272,17 @@ function outroHTML() {
     </div>
     <div class="demo-more">وفيه أكثر: أدوات الرحلة (الطقس والإجازات والشنطة والتنقل)، مجتمع التجارب، مقارنة الدول، وإضافة أماكنك للبرنامج.</div>
     <div class="demo-links">
-        <a class="btn btn-primary" href="https://github.com/lamaS10/SahilDarbak" target="_blank" rel="noopener">${ic("code")}المشروع على GitHub</a>
+        <a class="btn btn-primary" href="${REPO_URL}" target="_blank" rel="noopener">${ic("code")}المشروع على GitHub</a>
         <button id="replayBtn" class="btn btn-secondary" type="button">${ic("replay")}أعد العرض</button>
     </div>
-    <p class="demo-team">فريق العمل: <b>رزان</b> · <b>لمى</b> · <b>محمد</b></p>
+    <h3 class="demo-team-title">فريق العمل</h3>
+    <div class="demo-team-grid">
+        ${TEAM.map(m => `
+        <div class="demo-member">
+            <strong dir="ltr">${m.name}</strong>
+            ${m.linkedin ? `<a class="btn btn-secondary demo-li" href="${m.linkedin}" target="_blank" rel="noopener">${LI_ICON}<span>LinkedIn</span></a>` : ""}
+        </div>`).join("")}
+    </div>
 </div></div>`;
 }
 

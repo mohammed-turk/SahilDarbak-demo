@@ -5641,9 +5641,11 @@ body { padding-bottom: 110px; overflow-x: clip; }
 #cursor {
     position: fixed; left: 0; top: 0; z-index: 600; pointer-events: none;
     transform: translate(-80px, 70vh);
-    transition: transform var(--cur, .7s) cubic-bezier(.4, 0, .2, 1);
+    transition: transform var(--cur, .7s) cubic-bezier(.4, 0, .2, 1), opacity .35s ease;
     filter: drop-shadow(0 3px 5px rgba(0,0,0,.25));
+    opacity: 0;
 }
+#cursor.visible { opacity: 1; }
 #cursor::after {
     content: ""; position: absolute; left: -10px; top: -10px; width: 26px; height: 26px; border-radius: 50%;
     background: rgba(244,162,97,.55); opacity: 0; transform: scale(.3);
@@ -5733,3 +5735,41 @@ html { overflow-x: clip; }
     .dashboard-link, .logout-btn { min-width: 43px; padding: 0 10px; }
     .language-btn { padding: 0 12px; }
 }
+
+
+/* تعتيم نهاية اللمسة + تنبيه الزر */
+#dimLayer {
+    position: fixed; inset: 0; z-index: 350; pointer-events: none;
+    background: rgba(7, 62, 74, .35); opacity: 0; transition: opacity .5s ease;
+}
+#dimLayer.on { opacity: 1; }
+.next-wrap { position: relative; }
+.done-hint {
+    position: absolute; bottom: calc(100% + 12px); left: 0;
+    padding: 8px 14px; border-radius: 12px; white-space: nowrap;
+    background: var(--primary); color: #fff; font-size: 13px; font-weight: 700;
+    box-shadow: var(--shadow-md);
+}
+.done-hint::after {
+    content: ""; position: absolute; top: 100%; left: 24px;
+    border: 6px solid transparent; border-top-color: var(--primary);
+}
+#nextBtn.pulse { animation: nextPulse 1.4s ease-in-out infinite; }
+@keyframes nextPulse {
+    0%, 100% { box-shadow: 0 0 0 0 rgba(244,162,97,.65); }
+    50% { box-shadow: 0 0 0 10px rgba(244,162,97,0); }
+}
+@media (prefers-reduced-motion: reduce) { #nextBtn.pulse { animation: none; box-shadow: 0 0 0 4px rgba(244,162,97,.5); } }
+@media (max-width: 700px) { .next-wrap { flex: 1; } .next-wrap .btn { width: 100%; } .done-hint { left: auto; right: 0; transform: none; } .done-hint::after { left: auto; right: 24px; margin: 0; } }
+
+
+/* فريق العمل في الختام */
+.demo-team-title { margin: 26px 0 12px; font-size: 16px; color: var(--text-secondary); }
+.demo-team-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; }
+.demo-member {
+    min-width: 0; padding: 14px 10px; display: flex; flex-direction: column; align-items: center; gap: 10px;
+    background: var(--background); border-radius: 16px;
+}
+.demo-member strong { font-size: 15px; color: var(--primary); overflow-wrap: anywhere; }
+.demo-li { min-height: 38px; padding: 0 14px; font-size: 14px; }
+@media (max-width: 700px) { .demo-team-grid { grid-template-columns: 1fr; } }
