@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>لمسات سهل دربك</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;600;700;800&display=swap">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@20..48,400..600,0..1,-25..0">
+
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<!-- الشريط العلوي: شارة + تقدّم اللمسات -->
+<div id="demoBar">
+    <span class="demo-badge">بيانات تجريبية</span>
+    <span id="demoTitle" class="demo-title">سهل دربك · عرض تعريفي</span>
+    <div id="demoDots" class="demo-dots" aria-label="تقدم اللمسات"></div>
+</div>
+
+<!-- الموقع (محاكاة صفحات المشروع الحقيقية) -->
+<div id="site">
+
+    <header class="navbar" id="siteNavbar">
+        <a class="navbar-logo"><img src="assets/logo.png" alt="سهل دربك"></a>
+
+        <nav class="navbar-links">
+            <a>الرئيسية</a>
+            <a>اكتشف</a>
+            <a>خطط رحلتك</a>
+            <a>مجتمع المسافرين</a>
+        </nav>
+
+        <div class="navbar-actions">
+            <button class="language-btn" type="button">EN</button>
+            <div class="navbar-user-actions">
+                <a class="dashboard-link">
+                    <span class="material-symbols-rounded">dashboard</span>
+                    <span>رحلاتي</span>
+                </a>
+                <button class="logout-btn" type="button">
+                    <span class="material-symbols-rounded">logout</span>
+                    <span>تسجيل الخروج</span>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <div id="stage"></div>
+</div>
+
+<!-- تنبيهات -->
+<div id="toasts" class="im-toasts"></div>
+
+<!-- المؤشر الوهمي -->
+<div id="cursor" aria-hidden="true">
+    <svg viewBox="0 0 24 24" width="26" height="26">
+        <path d="M4 2l16 9-7 2-3 7z" fill="#0F4C5C" stroke="#fff" stroke-width="1.6" stroke-linejoin="round"/>
+    </svg>
+</div>
+
+<!-- شريط التحكم -->
+<div id="controlBar">
+    <div class="ctl-info">
+        <strong id="ctlTitle"></strong>
+        <span id="ctlDesc"></span>
+    </div>
+    <div class="ctl-actions">
+        <button id="speedBtn" class="btn btn-secondary" type="button">
+            <span class="material-symbols-rounded">fast_forward</span>
+            <span id="speedLabel">سرّع اللمسة</span>
+        </button>
+        <button id="nextBtn" class="btn btn-primary" type="button">
+            <span id="nextLabel">ابدأ</span>
+            <span class="material-symbols-rounded">arrow_back</span>
+        </button>
+    </div>
+</div>
+
+<script src="app.js"></script>
+</body>
+</html>
